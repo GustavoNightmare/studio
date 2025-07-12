@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PlusCircle, UtensilsCrossed } from "lucide-react";
 import  ProductGrid from "@/components/app/product-grid";
-import  SalesHistory  from "@/components/app/sales-history";
+import  SalesDashboard from "@/components/app/sales-dashboard";
 import { ManageProductDialog } from "@/components/app/manage-product-dialog";
 import { useToast } from "@/hooks/use-toast";
 
@@ -161,10 +161,10 @@ export default function DashboardPage() {
         <Tabs defaultValue="inventory">
           <TabsList className="grid w-full grid-cols-2 md:w-[400px]">
             <TabsTrigger value="inventory">Inventario</TabsTrigger>
-            <TabsTrigger value="sales">Historial de Ventas</TabsTrigger>
+            <TabsTrigger value="sales">Ventas</TabsTrigger>
           </TabsList>
           <TabsContent value="inventory">
-            <Card>
+            <Card className="shadow-lg">
               <CardHeader>
                 <CardTitle>Productos</CardTitle>
                 <CardDescription>
@@ -183,7 +183,7 @@ export default function DashboardPage() {
             </Card>
           </TabsContent>
           <TabsContent value="sales">
-            <SalesHistory sales={sales} />
+            <SalesDashboard sales={sales} />
           </TabsContent>
         </Tabs>
       </main>

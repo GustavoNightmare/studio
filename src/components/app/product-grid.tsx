@@ -5,7 +5,7 @@ import ProductCard from "./product-card";
 
 interface ProductGridProps {
   products: Product[];
-  onEditProduct: (product: Product) => void;
+  onEditProduct: (product: Product & { imageFile?: File }) => void;
   onDeleteProduct: (productId: string) => void;
   onUpdateStock: (productId: string, newStock: number) => void;
   onSellProduct: (productId: string, quantity: number) => void;

@@ -35,7 +35,7 @@ import { SellProductDialog } from "./sell-product-dialog";
 
 interface ProductCardProps {
   product: Product;
-  onEdit: (product: Product) => void;
+  onEdit: (product: Product & { imageFile?: File | undefined }) => void;
   onDelete: (productId: string) => void;
   onUpdateStock: (productId: string, newStock: number) => void;
   onSell: (productId: string, quantity: number) => void;
@@ -58,7 +58,7 @@ export default function ProductCard({
   };
 
   return (
-    <Card className="flex flex-col overflow-hidden shadow-md transition-shadow hover:shadow-xl">
+    <Card className="flex flex-col overflow-hidden shadow-lg transition-shadow hover:shadow-xl">
       <CardHeader className="p-0">
         <div className="relative h-48 w-full">
           <Image
