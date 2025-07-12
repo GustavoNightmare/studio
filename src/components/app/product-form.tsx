@@ -19,15 +19,15 @@ import type { Product } from "@/types";
 
 const formSchema = z.object({
   name: z.string().min(2, {
-    message: "Product name must be at least 2 characters.",
+    message: "El nombre del producto debe tener al menos 2 caracteres.",
   }),
   price: z.coerce.number().min(0, {
-    message: "Price must be a positive number.",
+    message: "El precio debe ser un número positivo.",
   }),
   stock: z.coerce.number().int().min(0, {
-    message: "Stock must be a positive whole number.",
+    message: "El stock debe ser un número entero positivo.",
   }),
-  imageUrl: z.string().url({ message: "Please enter a valid URL." }),
+  imageUrl: z.string().url({ message: "Por favor, introduce una URL válida." }),
 });
 
 type ProductFormValues = z.infer<typeof formSchema>;
@@ -57,9 +57,9 @@ export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Product Name</FormLabel>
+              <FormLabel>Nombre del Producto</FormLabel>
               <FormControl>
-                <Input placeholder="e.g. Chocolate Cake" {...field} />
+                <Input placeholder="ej. Torta de Chocolate" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -71,7 +71,7 @@ export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
             name="price"
             render={({ field }) => (
                 <FormItem>
-                <FormLabel>Price</FormLabel>
+                <FormLabel>Precio</FormLabel>
                 <FormControl>
                     <Input type="number" step="0.01" {...field} />
                 </FormControl>
@@ -98,12 +98,12 @@ export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
           name="imageUrl"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Image URL</FormLabel>
+              <FormLabel>URL de la Imagen</FormLabel>
               <FormControl>
                 <Input placeholder="https://..." {...field} />
               </FormControl>
               <FormDescription>
-                Use a service like placehold.co for placeholder images.
+                Usa un servicio como placehold.co para imágenes de marcador de posición.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -111,9 +111,9 @@ export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
         />
         <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="ghost" onClick={onCancel}>
-                Cancel
+                Cancelar
             </Button>
-            <Button type="submit">Save</Button>
+            <Button type="submit">Guardar</Button>
         </div>
       </form>
     </Form>

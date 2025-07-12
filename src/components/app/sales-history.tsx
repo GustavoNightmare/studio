@@ -27,14 +27,16 @@ export default function SalesHistory({ sales }: SalesHistoryProps) {
   const totalRevenue = sales.reduce((sum, sale) => sum + sale.totalPrice, 0);
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat("es-CO", {
       style: "currency",
-      currency: "USD",
+      currency: "COP",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
     }).format(amount);
   };
 
   const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat("en-US", {
+    return new Intl.DateTimeFormat("es-CO", {
         dateStyle: 'medium',
         timeStyle: 'short'
     }).format(date);
@@ -43,19 +45,19 @@ export default function SalesHistory({ sales }: SalesHistoryProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Sales History</CardTitle>
+        <CardTitle>Historial de Ventas</CardTitle>
         <CardDescription>
-          A log of all sales made through the app.
+          Un registro de todas las ventas realizadas a través de la aplicación.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Product</TableHead>
-              <TableHead className="text-center">Quantity</TableHead>
-              <TableHead className="text-right">Total Price</TableHead>
-              <TableHead className="text-right">Date</TableHead>
+              <TableHead>Producto</TableHead>
+              <TableHead className="text-center">Cantidad</TableHead>
+              <TableHead className="text-right">Precio Total</TableHead>
+              <TableHead className="text-right">Fecha</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -71,7 +73,7 @@ export default function SalesHistory({ sales }: SalesHistoryProps) {
             ) : (
               <TableRow>
                 <TableCell colSpan={4} className="h-24 text-center">
-                  No sales recorded yet.
+                  Aún no se han registrado ventas.
                 </TableCell>
               </TableRow>
             )}
@@ -80,7 +82,7 @@ export default function SalesHistory({ sales }: SalesHistoryProps) {
       </CardContent>
       <CardFooter className="justify-end">
         <div className="flex items-center gap-4">
-            <span className="text-lg font-medium">Total Revenue:</span>
+            <span className="text-lg font-medium">Ingresos Totales:</span>
             <Badge variant="default" className="text-xl">
               {formatCurrency(totalRevenue)}
             </Badge>

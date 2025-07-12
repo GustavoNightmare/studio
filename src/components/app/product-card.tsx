@@ -49,9 +49,11 @@ export default function ProductCard({
   onSell,
 }: ProductCardProps) {
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat("es-CO", {
       style: "currency",
-      currency: "USD",
+      currency: "COP",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
     }).format(amount);
   };
 
@@ -77,7 +79,7 @@ export default function ProductCard({
       <CardContent className="flex-grow p-4 pt-0">
         <div className="flex items-center justify-between">
           <Badge variant={product.stock > 0 ? "secondary" : "destructive"}>
-            {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
+            {product.stock > 0 ? `${product.stock} en stock` : "Agotado"}
           </Badge>
           <div className="flex items-center gap-2">
             <Button
@@ -104,31 +106,31 @@ export default function ProductCard({
       <CardFooter className="grid grid-cols-3 gap-2 p-4 pt-0">
         <ManageProductDialog product={product} onSave={onEdit}>
           <Button variant="outline" size="sm" className="w-full">
-            <Pencil className="mr-2 h-4 w-4" /> Edit
+            <Pencil className="mr-2 h-4 w-4" /> Editar
           </Button>
         </ManageProductDialog>
 
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="outline" size="sm" className="w-full">
-              <Trash2 className="mr-2 h-4 w-4" /> Delete
+              <Trash2 className="mr-2 h-4 w-4" /> Eliminar
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogTitle>¿Estás absolutamente seguro?</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete the
-                product "{product.name}".
+                Esta acción no se puede deshacer. Esto eliminará permanentemente el
+                producto "{product.name}".
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel>Cancelar</AlertDialogCancel>
               <AlertDialogAction
                 onClick={() => onDelete(product.id)}
                 className="bg-destructive hover:bg-destructive/90"
               >
-                Delete
+                Eliminar
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -136,7 +138,7 @@ export default function ProductCard({
         
         <SellProductDialog product={product} onSell={onSell}>
             <Button size="sm" className="w-full" disabled={product.stock === 0}>
-                <DollarSign className="mr-2 h-4 w-4" /> Sell
+                <DollarSign className="mr-2 h-4 w-4" /> Vender
             </Button>
         </SellProductDialog>
       </CardFooter>

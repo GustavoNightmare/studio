@@ -27,7 +27,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 const sellSchema = z.object({
-  quantity: z.coerce.number().int().min(1, "Must sell at least 1 item."),
+  quantity: z.coerce.number().int().min(1, "Debes vender al menos 1 artículo."),
 });
 
 interface SellProductDialogProps {
@@ -43,7 +43,7 @@ export function SellProductDialog({ product, children, onSell }: SellProductDial
     resolver: zodResolver(sellSchema.refine(
         (data) => data.quantity <= product.stock,
         {
-          message: `Cannot sell more than available stock (${product.stock}).`,
+          message: `No se puede vender más que el stock disponible (${product.stock}).`,
           path: ["quantity"],
         }
     )),
@@ -63,10 +63,10 @@ export function SellProductDialog({ product, children, onSell }: SellProductDial
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Sell: {product.name}</DialogTitle>
+          <DialogTitle>Vender: {product.name}</DialogTitle>
           <DialogDescription>
-            Enter the quantity you want to sell. There are {product.stock} units
-            available.
+            Ingresa la cantidad que quieres vender. Hay {product.stock} unidades
+            disponibles.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -76,7 +76,7 @@ export function SellProductDialog({ product, children, onSell }: SellProductDial
               name="quantity"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Quantity</FormLabel>
+                  <FormLabel>Cantidad</FormLabel>
                   <FormControl>
                     <Input type="number" min="1" max={product.stock} {...field} />
                   </FormControl>
@@ -88,9 +88,9 @@ export function SellProductDialog({ product, children, onSell }: SellProductDial
         </Form>
         <DialogFooter>
           <Button type="button" variant="ghost" onClick={() => setOpen(false)}>
-            Cancel
+            Cancelar
           </Button>
-          <Button type="submit" form="sell-form">Confirm Sale</Button>
+          <Button type="submit" form="sell-form">Confirmar Venta</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

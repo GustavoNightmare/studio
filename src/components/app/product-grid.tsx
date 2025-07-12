@@ -22,10 +22,10 @@ export default function ProductGrid({
     return (
       <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/30 bg-muted/20 py-12 text-center">
         <h3 className="text-xl font-bold tracking-tight text-muted-foreground">
-          No products in inventory
+          No hay productos en el inventario
         </h3>
         <p className="text-sm text-muted-foreground">
-          Click "Add Product" to get started.
+          Haz clic en "Agregar Producto" para empezar.
         </p>
       </div>
     );

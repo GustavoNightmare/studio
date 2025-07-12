@@ -12,12 +12,12 @@ import { ManageProductDialog } from "@/components/app/manage-product-dialog";
 import { useToast } from "@/hooks/use-toast";
 
 const initialProducts: Product[] = [
-  { id: "1", name: "Red Velvet Cake", price: 25.50, stock: 10, imageUrl: "https://placehold.co/600x400.png", 'data-ai-hint': 'red velvet cake' },
-  { id: "2", name: "Chocolate Chip Cookies", price: 1.25, stock: 150, imageUrl: "https://placehold.co/600x400.png", 'data-ai-hint': 'chocolate cookies' },
-  { id: "3", name: "Cheesecake", price: 30.00, stock: 8, imageUrl: "https://placehold.co/600x400.png", 'data-ai-hint': 'cheesecake dessert' },
-  { id: "4", name: "Brownies", price: 2.50, stock: 75, imageUrl: "https://placehold.co/600x400.png", 'data-ai-hint': 'chocolate brownies' },
-  { id: "5", name: "Apple Pie", price: 22.00, stock: 12, imageUrl: "https://placehold.co/600x400.png", 'data-ai-hint': 'apple pie' },
-  { id: "6", name: "Macarons", price: 2.00, stock: 200, imageUrl: "https://placehold.co/600x400.png", 'data-ai-hint': 'colorful macarons' },
+  { id: "1", name: "Torta Red Velvet", price: 50000, stock: 10, imageUrl: "https://placehold.co/600x400.png", 'data-ai-hint': 'red velvet cake' },
+  { id: "2", name: "Galletas con Chips de Chocolate", price: 2500, stock: 150, imageUrl: "https://placehold.co/600x400.png", 'data-ai-hint': 'chocolate cookies' },
+  { id: "3", name: "Cheesecake", price: 60000, stock: 8, imageUrl: "https://placehold.co/600x400.png", 'data-ai-hint': 'cheesecake dessert' },
+  { id: "4", name: "Brownies", price: 5000, stock: 75, imageUrl: "https://placehold.co/600x400.png", 'data-ai-hint': 'chocolate brownies' },
+  { id: "5", name: "Tarta de Manzana", price: 45000, stock: 12, imageUrl: "https://placehold.co/600x400.png", 'data-ai-hint': 'apple pie' },
+  { id: "6", name: "Macarons", price: 4000, stock: 200, imageUrl: "https://placehold.co/600x400.png", 'data-ai-hint': 'colorful macarons' },
 ];
 
 export default function DashboardPage() {
@@ -32,8 +32,8 @@ export default function DashboardPage() {
     };
     setProducts((prev) => [...prev, newProduct]);
     toast({
-      title: "Success",
-      description: "Product added to inventory.",
+      title: "Éxito",
+      description: "Producto agregado al inventario.",
     });
   };
 
@@ -42,16 +42,16 @@ export default function DashboardPage() {
       prev.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
     );
     toast({
-      title: "Success",
-      description: "Product details updated.",
+      title: "Éxito",
+      description: "Detalles del producto actualizados.",
     });
   };
 
   const handleDeleteProduct = (productId: string) => {
     setProducts((prev) => prev.filter((p) => p.id !== productId));
      toast({
-      title: "Product Deleted",
-      description: "The product has been removed from inventory.",
+      title: "Producto Eliminado",
+      description: "El producto ha sido eliminado del inventario.",
       variant: "destructive"
     });
   };
@@ -60,7 +60,7 @@ export default function DashboardPage() {
     if (newStock < 0) {
       toast({
         title: "Error",
-        description: "Stock cannot be negative.",
+        description: "El stock no puede ser negativo.",
         variant: "destructive",
       });
       return;
@@ -76,8 +76,8 @@ export default function DashboardPage() {
 
     if(product.stock < quantity) {
       toast({
-        title: "Insufficient Stock",
-        description: `Only ${product.stock} units of ${product.name} available.`,
+        title: "Stock Insuficiente",
+        description: `Solo hay ${product.stock} unidades de ${product.name} disponibles.`,
         variant: "destructive",
       });
       return;
@@ -95,8 +95,8 @@ export default function DashboardPage() {
     setSales(prev => [newSale, ...prev]);
     handleUpdateStock(productId, product.stock - quantity);
     toast({
-      title: "Sale Recorded!",
-      description: `Sold ${quantity} of ${product.name}.`,
+      title: "¡Venta Registrada!",
+      description: `Se vendieron ${quantity} de ${product.name}.`,
     });
   };
 
@@ -110,7 +110,7 @@ export default function DashboardPage() {
         <div className="ml-auto">
           <ManageProductDialog onSave={handleAddProduct}>
             <Button>
-              <PlusCircle className="mr-2 h-4 w-4" /> Add Product
+              <PlusCircle className="mr-2 h-4 w-4" /> Agregar Producto
             </Button>
           </ManageProductDialog>
         </div>
@@ -118,15 +118,15 @@ export default function DashboardPage() {
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <Tabs defaultValue="inventory">
           <TabsList className="grid w-full grid-cols-2 md:w-[400px]">
-            <TabsTrigger value="inventory">Inventory</TabsTrigger>
-            <TabsTrigger value="sales">Sales History</TabsTrigger>
+            <TabsTrigger value="inventory">Inventario</TabsTrigger>
+            <TabsTrigger value="sales">Historial de Ventas</TabsTrigger>
           </TabsList>
           <TabsContent value="inventory">
             <Card>
               <CardHeader>
-                <CardTitle>Products</CardTitle>
+                <CardTitle>Productos</CardTitle>
                 <CardDescription>
-                  Manage your products and view their inventory status.
+                  Gestiona tus productos y mira el estado de su inventario.
                 </CardDescription>
               </CardHeader>
               <CardContent>

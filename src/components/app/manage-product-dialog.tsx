@@ -38,11 +38,11 @@ export function ManageProductDialog({ product, children, onSave }: ManageProduct
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{isEditMode ? "Edit Product" : "Add New Product"}</DialogTitle>
+          <DialogTitle>{isEditMode ? "Editar Producto" : "Agregar Nuevo Producto"}</DialogTitle>
           <DialogDescription>
             {isEditMode
-              ? "Make changes to your product here. Click save when you're done."
-              : "Add a new product to your inventory. Click save when you're done."}
+              ? "Realiza cambios a tu producto aquí. Haz clic en guardar cuando termines."
+              : "Agrega un nuevo producto a tu inventario. Haz clic en guardar cuando termines."}
           </DialogDescription>
         </DialogHeader>
         <ProductForm
