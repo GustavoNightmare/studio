@@ -137,7 +137,7 @@ export default function ProductCard({
         </AlertDialog>
         
         <SellProductDialog product={product} onSell={onSell}>
-            <Button size="sm" className="w-full" disabled={product.stock === 0}>
+            <Button size="sm" className="w-full col-span-3 mt-2 md:col-span-1 md:mt-0" disabled={product.stock === 0}>
                 <DollarSign className="mr-2 h-4 w-4" /> Vender
             </Button>
         </SellProductDialog>
