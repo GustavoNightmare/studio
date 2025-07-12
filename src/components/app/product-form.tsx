@@ -1,8 +1,11 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import Image from "next/image";
+import { useState, useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +20,9 @@ import {
 import { Input } from "@/components/ui/input";
 import type { Product } from "@/types";
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "El nombre del producto debe tener al menos 2 caracteres.",
@@ -27,31 +33,73 @@ const formSchema = z.object({
   stock: z.coerce.number().int().min(0, {
     message: "El stock debe ser un número entero positivo.",
   }),
-  imageUrl: z.string().url({ message: "Por favor, introduce una URL válida." }),
+  image: z.any()
+    .refine((value) => {
+        if (typeof value === 'string') return true;
+        return value?.[0]?.size <= MAX_FILE_SIZE;
+    }, `El tamaño máximo de la imagen es 5MB.`)
+    .refine((value) => {
+        if (typeof value === 'string') return true;
+        return ACCEPTED_IMAGE_TYPES.includes(value?.[0]?.type);
+    }, "Solo se aceptan formatos .jpg, .jpeg, .png y .webp."),
 });
+
 
 type ProductFormValues = z.infer<typeof formSchema>;
 
 interface ProductFormProps {
   product?: Product;
-  onSubmit: (data: ProductFormValues) => void;
+  onSubmit: (data: Omit<Product, 'id' | 'imageUrl'> & { imageUrl?: string; imageFile?: File }) => void;
   onCancel: () => void;
 }
 
 export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
+  const [preview, setPreview] = useState<string | null>(product?.imageUrl || null);
+  
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: product?.name || "",
       price: product?.price || 0,
       stock: product?.stock || 0,
-      imageUrl: product?.imageUrl || "",
+      image: product?.imageUrl || undefined,
     },
   });
 
+  const imageRef = form.register("image");
+  const watchImage = form.watch("image");
+
+  useEffect(() => {
+    if (watchImage && typeof watchImage !== "string" && watchImage.length > 0) {
+      const file = watchImage[0];
+      if (file instanceof File) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreview(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      }
+    } else if (typeof watchImage === 'string') {
+      setPreview(watchImage);
+    }
+  }, [watchImage]);
+  
+  const handleFormSubmit = (data: ProductFormValues) => {
+    const { image, ...rest } = data;
+    const submissionData: any = { ...rest };
+
+    if (image && typeof image !== 'string' && image.length > 0) {
+      submissionData.imageFile = image[0];
+    } else if (typeof image === 'string') {
+       submissionData.imageUrl = image;
+    }
+    onSubmit(submissionData);
+  };
+
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="name"
@@ -73,7 +121,7 @@ export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
                 <FormItem>
                 <FormLabel>Precio</FormLabel>
                 <FormControl>
-                    <Input type="number" step="0.01" {...field} />
+                    <Input type="number" step="1" {...field} />
                 </FormControl>
                 <FormMessage />
                 </FormItem>
@@ -95,20 +143,30 @@ export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
         </div>
         <FormField
           control={form.control}
-          name="imageUrl"
+          name="image"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>URL de la Imagen</FormLabel>
+              <FormLabel>Imagen del Producto</FormLabel>
               <FormControl>
-                <Input placeholder="https://..." {...field} />
+                <Input type="file" accept="image/*" {...imageRef} />
               </FormControl>
               <FormDescription>
-                Usa un servicio como placehold.co para imágenes de marcador de posición.
+                Sube una imagen para tu producto.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
+        
+        {preview && (
+            <div className="mt-4">
+                <FormLabel>Vista Previa</FormLabel>
+                <div className="mt-2 relative w-full h-48 rounded-md overflow-hidden border">
+                    <Image src={preview} alt="Vista previa de la imagen" layout="fill" objectFit="cover" />
+                </div>
+            </div>
+        )}
+
         <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="ghost" onClick={onCancel}>
                 Cancelar

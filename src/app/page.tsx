@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -20,15 +21,39 @@ const initialProducts: Product[] = [
   { id: "6", name: "Macarons", price: 4000, stock: 200, imageUrl: "https://placehold.co/600x400.png", 'data-ai-hint': 'colorful macarons' },
 ];
 
+const fileToDataUrl = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+};
+
 export default function DashboardPage() {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [sales, setSales] = useState<Sale[]>([]);
   const { toast } = useToast();
 
-  const handleAddProduct = (newProductData: Omit<Product, "id" | "data-ai-hint">) => {
+  const handleAddProduct = async (newProductData: Omit<Product, "id" | "imageUrl" | "data-ai-hint"> & { imageFile?: File }) => {
+    let imageUrl = "https://placehold.co/600x400.png";
+    if (newProductData.imageFile) {
+      try {
+        imageUrl = await fileToDataUrl(newProductData.imageFile);
+      } catch (error) {
+        toast({
+          title: "Error de Imagen",
+          description: "No se pudo procesar la imagen.",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+    
     const newProduct: Product = {
       ...newProductData,
       id: crypto.randomUUID(),
+      imageUrl,
     };
     setProducts((prev) => [...prev, newProduct]);
     toast({
@@ -37,9 +62,26 @@ export default function DashboardPage() {
     });
   };
 
-  const handleEditProduct = (updatedProduct: Product) => {
+  const handleEditProduct = async (updatedProductData: Product & { imageFile?: File }) => {
+     let imageUrl = updatedProductData.imageUrl;
+    if (updatedProductData.imageFile) {
+       try {
+        imageUrl = await fileToDataUrl(updatedProductData.imageFile);
+      } catch (error) {
+        toast({
+          title: "Error de Imagen",
+          description: "No se pudo procesar la imagen.",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+
+    const finalProduct = { ...updatedProductData, imageUrl };
+    delete (finalProduct as any).imageFile;
+
     setProducts((prev) =>
-      prev.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
+      prev.map((p) => (p.id === finalProduct.id ? finalProduct : p))
     );
     toast({
       title: "Éxito",

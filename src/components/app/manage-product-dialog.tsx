@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, type ReactNode } from "react";
@@ -24,7 +25,7 @@ export function ManageProductDialog({ product, children, onSave }: ManageProduct
   const [open, setOpen] = useState(false);
   const isEditMode = !!product;
 
-  const handleSave = (formData: Omit<Product, "id">) => {
+  const handleSave = (formData: Omit<Product, "id" | 'imageUrl'> & { imageFile?: File }) => {
     if (isEditMode) {
       onSave({ ...product, ...formData });
     } else {
